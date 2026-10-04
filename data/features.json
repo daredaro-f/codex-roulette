@@ -1,0 +1,122 @@
+[
+  {
+    "id": "gpt61_sol",
+    "name": "GPT-6.1 Sol",
+    "short_name": "GPT-6.1 Sol",
+    "description": "複雑なコード作成や仕事を、Astraに近い性能と比較的低いコストで進める新モデル。Codexで選んで、小さなアプリの実装や改造を試せる。",
+    "requirements": "CodexまたはChatGPT Workで、モデル選択にGPT-6.1 Solが表示されるか確認する。お題を作るLM Studioのモデルとは別。",
+    "availability": "利用可否は自分のアカウントで確認。ローンチ対象はPlus・Pro・Business・Enterprise・Eduで、Enterprise・Eduは管理者の有効化が必要。Free・Goはローンチ対象外。通常のChatでは選べない。",
+    "source_url": "https://learn.chatgpt.com/docs/models",
+    "announced_at": "2026-09-29",
+    "verified_at": "2026-10-03",
+    "effort_minutes": 20,
+    "default_enabled": true,
+    "category": "build",
+    "tag": "新モデル",
+    "sample": {
+      "topic": "魔王の今日やること抽選機を作る",
+      "constraint": "ボタンも結果も魔王の部下への指令口調にする",
+      "application": "CodexでGPT-6.1 Solを選び、やることを入力して一つ抽選するミニアプリを作る。"
+    }
+  },
+  {
+    "id": "annotation_ext",
+    "name": "Browser Annotation API",
+    "short_name": "Annotation API",
+    "description": "ページ上で選べる範囲や、注釈に添える情報をサイト側で調整できる。色や余白の変更をプレビューしてから、CodexやChatGPT Workへ相談する操作も作れる。",
+    "requirements": "DevDay 2026対応のデスクトップアプリの内蔵ブラウザで開く。HTTPSまたはlocalhostのページで、document.oai.annotationの対応を確認する。",
+    "availability": "利用可否はアプリとアカウントで確認。現在Enterprise・EduワークスペースではAPIを利用できない。普通のブラウザ注釈と、このAPIによる拡張は別の機能。",
+    "source_url": "https://learn.chatgpt.com/docs/annotations-extensibility",
+    "announced_at": "2026-09-29",
+    "verified_at": "2026-10-03",
+    "effort_minutes": 25,
+    "default_enabled": true,
+    "category": "build",
+    "tag": "画面を指さす",
+    "sample": {
+      "topic": "深海研究所の集中タイマーを作る",
+      "constraint": "残り1分で研究所の緊急モードになる",
+      "application": "タイマーカードを一つの選択対象にして、注釈パネルから余白をプレビューできるようにする。"
+    }
+  },
+  {
+    "id": "plugin_extensions",
+    "name": "Plugin Extensions",
+    "short_name": "Plugin Extensions",
+    "description": "ChatGPTのサイドバーや会話の横に、自分のプラグインの画面を置ける。会話を続けながら使うアイデアカードや、小さなフォームを作れる。",
+    "requirements": "ChatGPTの対応環境とプラグイン接続を確認する。公式サンプルBits & Boltsや、起動できるMCPアプリのひな形を事前に用意する。",
+    "availability": "ChatGPT向けの拡張。アカウントと表示場所によって対応が異なるので事前に確認。Free・GoのWeb拡張は提供予定で、入力欄のメンション機能はデスクトップ限定。",
+    "source_url": "https://developers.openai.com/plugins/build/extensions",
+    "announced_at": "2026-09-29",
+    "verified_at": "2026-10-03",
+    "effort_minutes": 40,
+    "default_enabled": false,
+    "category": "build",
+    "tag": "会話の横のUI",
+    "sample": {
+      "topic": "会話の横に必殺技アイデアカードを置く",
+      "constraint": "カード名をすべて架空の必殺技にする",
+      "application": "準備済みのプラグインひな形を改造し、ChatGPTの会話パネルにアイデア一覧を表示する。"
+    }
+  },
+  {
+    "id": "space_pages",
+    "name": "ChatGPT Space / Pages",
+    "short_name": "Space / Pages",
+    "description": "ファイルや編集できるPageをまとめ、ChatGPTと一緒に文章を整えられる。メモを直接直したり、参加者に閲覧・コメント・編集の権限を付けて共有したりできる。",
+    "requirements": "Spaceを使えるChatGPTアカウントと、実験メモを置く場所を確認する。共同編集する場合はPageやSpaceの共有権限を設定する。",
+    "availability": "Spaceが有効なアカウントが必要。表示される保存先や共有相手はワークスペースの設定と権限に依存する。Codexのローカルファイルとは別の保存先。",
+    "source_url": "https://learn.chatgpt.com/docs/space/getting-started",
+    "announced_at": "2026-09-29",
+    "verified_at": "2026-10-03",
+    "effort_minutes": 15,
+    "default_enabled": false,
+    "category": "workflow",
+    "tag": "実験を残す",
+    "sample": {
+      "topic": "今日の実験記録を研究日誌のPageにまとめる",
+      "constraint": "見出しをすべて禁断の実験名にする",
+      "application": "ChatGPT SpaceでPageを作り、引いたお題・試した操作・気づきを整理して参加者と共有する。"
+    }
+  },
+  {
+    "id": "cloud_environment",
+    "name": "再利用できるCodexクラウド環境",
+    "short_name": "クラウド環境",
+    "description": "リポジトリや必要な道具を準備して、次の開発タスクでも同じ環境を使える。新しいタスクはそれぞれ独立した作業場所で動き、PCがスリープしていても作業を続けられる。",
+    "requirements": "Codex Cloudの利用権限、GitHub接続、練習用リポジトリを確認する。準備と動作確認を終えた環境を公開し、当日はその環境を選ぶ。",
+    "availability": "使えるクラウド環境と権限を事前に確認。時間の目安は環境を準備済みの場合で、依存関係のインストールや初回の環境公開は別に時間がかかる。",
+    "source_url": "https://learn.chatgpt.com/docs/environments/cloud-environments",
+    "announced_at": "2026-09-29",
+    "verified_at": "2026-10-03",
+    "effort_minutes": 25,
+    "default_enabled": false,
+    "category": "workflow",
+    "tag": "準備済み環境",
+    "sample": {
+      "topic": "クラウドの準備済み環境でミニゲームを改造する",
+      "constraint": "敵も味方も巨大なプリンにする",
+      "application": "練習用の公開済み環境からCodex Cloudの新しいタスクを始め、ミニゲームを改造して結果を確認する。"
+    }
+  },
+  {
+    "id": "security_cloud",
+    "name": "Codex Security Cloud",
+    "short_name": "Security Cloud",
+    "description": "接続したGitHubリポジトリをクラウドで調べ、脆弱性の発見事項や検証の根拠を読める。修正案を確認して、必要なら下書きのプルリクエストへ進められる。",
+    "requirements": "Codex Security Cloudプラグイン、GitHub接続、Codex Cloud環境、練習用リポジトリを用意する。普段の本番コードではなく、ハンズオン専用のコードで試す。",
+    "availability": "研究プレビュー。アカウントや管理者設定による利用可否を確認する。時間の目安にスキャン待ちは含めない。ローカル向けのCodex Securityプラグインとは別の機能。",
+    "source_url": "https://learn.chatgpt.com/docs/security/setup",
+    "announced_at": "2026-09-29",
+    "verified_at": "2026-10-03",
+    "effort_minutes": 30,
+    "default_enabled": false,
+    "category": "workflow",
+    "tag": "コードを調べる",
+    "sample": {
+      "topic": "練習用コードの発見事項を修正計画にまとめる",
+      "constraint": "修正の説明を探偵の事件簿風にする",
+      "application": "練習用リポジトリをOne-Time Scanで調べ、発見の根拠と提案された修正を確認して計画を書く。"
+    }
+  }
+]

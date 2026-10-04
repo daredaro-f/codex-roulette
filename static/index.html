@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#101014">
+    <meta name="description" content="新機能、お題、変な制約。3つの偶然からハンズオンの実験をはじめよう。">
+    <title>Codex実験ルーレット</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script type="module" src="/static/app.js"></script>
+    <script type="module" src="/static/annotations.js"></script>
+  </head>
+  <body>
+    <div class="ambient-grid" aria-hidden="true"></div>
+    <a class="skip-link" href="#roulette">ルーレットへ移動</a>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="wordmark" href="/" aria-label="Codex実験ルーレット ホーム">
+          <span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span>CODEX <strong>CATCHUP</strong><span class="brand-edition">EXPERIMENT LAB / 01</span></span>
+        </a>
+        <div class="topbar-controls">
+          <label class="utility-toggle"><input id="sound-toggle" type="checkbox"><span class="toggle-track" aria-hidden="true"></span><span>音</span></label>
+          <label class="utility-toggle"><input id="motion-toggle" type="checkbox"><span class="toggle-track" aria-hidden="true"></span><span>演出ひかえめ</span></label>
+        </div>
+      </header>
+      <p id="sound-status" class="settings-note" role="status" aria-live="polite" hidden></p>
+
+      <main id="roulette">
+        <section class="intro" aria-labelledby="page-title">
+          <div>
+            <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span> OPENAI DEV DAY 2026 · HANDS-ON PLAYGROUND</p>
+            <h1 id="page-title">Codex<span class="title-accent">実験ルーレット<span class="title-spark" aria-hidden="true">✳</span></span></h1>
+            <p class="intro-copy">機能 × お題 × 変な制約。<br class="mobile-break">その偶然を、つくる理由に。</p>
+          </div>
+          <div class="intro-sticker" aria-hidden="true"><span>IDEAS IN.</span><strong>CHAOS<br>OUT.</strong><span>LET'S MAKE SOMETHING.</span></div>
+        </section>
+
+        <section class="machine" aria-label="実験の抽選">
+          <div class="machine-topline">
+            <span class="machine-label"><span class="tiny-cross" aria-hidden="true">＋</span> EXPERIMENT GENERATOR</span>
+            <span id="experiment-number" class="experiment-number">STANDBY — 000</span>
+          </div>
+
+          <div id="reels" class="reels">
+            <article id="feature-card" class="reel-card feature-card" aria-labelledby="feature-label">
+              <div class="card-top"><h2 id="feature-label"><span class="card-number">01</span>使ってみる機能</h2><span class="card-glyph" aria-hidden="true">⌘</span></div>
+              <div class="card-content"><p id="feature-title" class="card-title">新機能を、<br>ひとつ。</p><p id="feature-subtitle" class="card-subtitle">新しい道具から実験をはじめる</p></div>
+              <div class="card-bottom"><span class="card-tag">NEW TOOL</span><button id="feature-info" class="info-button" type="button" aria-label="新機能の説明を開く" aria-controls="feature-popover" aria-expanded="false" disabled><span aria-hidden="true">i</span>機能の説明</button></div>
+            </article>
+            <article id="topic-card" class="reel-card topic-card" aria-labelledby="topic-label">
+              <div class="card-top"><h2 id="topic-label"><span class="card-number">02</span>つくるお題</h2><span class="card-glyph" aria-hidden="true">↗</span></div>
+              <div class="card-content"><p id="topic-title" class="card-title">ひらめきを、<br>かたちに。</p><p class="card-subtitle">短い時間でつくれる、小さな作品</p></div>
+              <div class="card-bottom"><span class="card-tag">YOUR MISSION</span><span class="card-decoration" aria-hidden="true">＋ ＋ ＋</span></div>
+            </article>
+            <article id="constraint-card" class="reel-card constraint-card" aria-labelledby="constraint-label">
+              <div class="card-top"><h2 id="constraint-label"><span class="card-number">03</span>変な制約</h2><span class="card-glyph" aria-hidden="true">✳</span></div>
+              <div class="card-content"><p id="constraint-title" class="card-title">常識を、<br>ひとつ外す。</p><p class="card-subtitle">ちょっとおかしい。だから、おもしろい。</p></div>
+              <div class="card-bottom"><span class="card-tag">PLOT TWIST</span><span class="card-decoration" aria-hidden="true">///</span></div>
+            </article>
+          </div>
+
+          <div class="draw-controls">
+            <div class="experiment-options">
+              <div class="option-field"><label for="minutes-select">実験時間</label><select id="minutes-select"><option value="15">15分</option><option value="30" selected>30分</option><option value="60">60分</option></select></div>
+              <div class="option-field"><label for="chaos-select">暴走度</label><select id="chaos-select"><option value="0">ひかえめ</option><option value="1" selected>濃いめ</option><option value="2">限界突破</option></select></div>
+            </div>
+            <button id="draw-button" class="draw-button" type="button" disabled><span class="draw-icon" aria-hidden="true">✳</span><span id="draw-label">実験を引く！</span><span class="draw-arrow" aria-hidden="true">↗</span></button>
+            <div class="source-control"><span class="source-label">お題の生成元</span><div class="mode-picker"><label><input type="radio" name="generation-mode" value="demo" checked><span>デモ</span></label><label><input id="local-mode" type="radio" name="generation-mode" value="local"><span>ローカルLLM</span></label></div></div>
+          </div>
+
+          <div class="status-line"><span id="status-dot" class="status-dot" aria-hidden="true"></span><p id="generation-status" role="status" aria-live="polite">実験室を準備している…</p><button id="cancel-button" class="text-button" type="button" hidden>待機をやめる</button></div>
+          <p id="draw-hint" class="draw-hint">使える新機能を選んで、実験を引こう。</p>
+          <div id="error-panel" class="error-panel" role="alert" hidden><div><strong id="error-message"></strong><p id="error-hint"></p></div><button id="demo-fallback" class="small-button" type="button">デモで引く</button></div>
+
+          <section id="result-actions" class="result-actions" aria-label="引いた実験をはじめる" hidden>
+            <div class="application-summary"><p class="section-kicker">HOW TO TRY <span>生成された使い方の案</span></p><p id="application-text"></p><p id="result-source" class="result-source"></p></div>
+            <button id="copy-button" class="copy-button" type="button"><span aria-hidden="true">⧉</span><span id="copy-label">この実験の依頼文をコピー</span><span aria-hidden="true">↗</span></button>
+            <button id="annotation-button" class="copy-button annotation-button" type="button" hidden>このカードをCodexと調整 ↗</button>
+            <details id="prompt-details" class="prompt-details"><summary>依頼文を見る</summary><textarea id="prompt-text" rows="8" readonly aria-label="Codexに貼り付ける依頼文"></textarea></details>
+          </section>
+          <div id="confetti" class="confetti-container" aria-hidden="true"></div>
+        </section>
+
+        <div class="settings-grid">
+          <details id="feature-settings" class="settings-panel"><summary><span><span class="summary-icon" aria-hidden="true">▦</span>使える新機能を選ぶ</span><span id="feature-count" class="summary-value">準備中</span><span class="summary-chevron" aria-hidden="true">⌄</span></summary><div class="settings-body"><p class="settings-intro">使えるものだけONにしよう。利用できるかは、各機能の説明で確認できる。</p><div id="feature-options" class="feature-options"></div><p id="feature-selection-note" class="settings-note"></p></div></details>
+          <details id="connection-settings" class="settings-panel"><summary><span><span class="summary-icon" aria-hidden="true">↔</span>LM Studio 接続設定</span><span id="connection-summary" class="summary-value">未接続</span><span class="summary-chevron" aria-hidden="true">⌄</span></summary><div class="settings-body"><p class="settings-intro">LM Studioでモデルを読み込み、Developerからサーバーを起動しよう。接続先はこのPCのローカルサーバー。</p><div class="connection-row"><div class="input-field"><label for="base-url-input">サーバーのURL</label><input id="base-url-input" type="url" value="http://127.0.0.1:1234/v1" spellcheck="false" autocomplete="off"></div><button id="connect-button" class="small-button" type="button">接続確認</button></div><div class="input-field"><label for="model-select">お題を考えるモデル</label><select id="model-select" disabled><option value="">接続確認でモデルを取得</option></select></div><p id="connection-message" class="settings-note" role="status" aria-live="polite">お題の生成にだけ使うよ。Codex側のモデル設定は変わらない。</p><p id="connection-save-note" class="settings-note">接続先・モデル・生成元を、このブラウザに保存する。</p><p id="auth-note" class="settings-note" hidden></p></div></details>
+        </div>
+
+        <footer class="page-footer"><span>CODEX CATCHUP #1 <span class="footer-dot">·</span> 2026.10.03</span><span>引く。知る。つくる。<span class="footer-spark" aria-hidden="true">✳</span></span></footer>
+      </main>
+    </div>
+
+    <aside id="feature-popover" class="feature-popover" aria-labelledby="popover-title" hidden>
+      <div class="popover-heading"><p class="section-kicker">FEATURE FIELD GUIDE</p><button id="popover-close" class="icon-button" type="button" aria-label="機能の説明を閉じる">×</button></div>
+      <h2 id="popover-title"></h2>
+      <div id="popover-content"></div>
+    </aside>
+    <noscript><p class="noscript-notice">このルーレットを使うには、ブラウザでJavaScriptを有効にしてね。</p></noscript>
+  </body>
+</html>
