@@ -140,6 +140,8 @@ APIテストは `httpx.MockTransport` の偽の応答を使い、本物のLM Stu
 
 ## 公式情報
 
+依存ライブラリの一覧・著作権表示・各ライセンスの原文は [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) にまとめた。各依存ライブラリには、それぞれのライセンスが適用される。
+
 - [DevDay 2026公式発表](https://learn.chatgpt.com/docs/whats-new/devday-2026)
 - [LM Studioの互換API](https://lmstudio.ai/docs/developer/openai-compat)
 - [LM StudioのJSON Schema出力](https://lmstudio.ai/docs/developer/openai-compat/structured-output)
