@@ -286,7 +286,7 @@ def create_app(settings: Settings | None = None,
                             native[item["key"]] = item
                             for instance in item.get("loaded_instances", []):
                                 native[instance["id"]] = item
-                except (httpx.HTTPError, TimeoutError, ValueError, KeyError, TypeError):
+                except (httpx.HTTPError, asyncio.TimeoutError, TimeoutError, ValueError, KeyError, TypeError):
                     pass  # Older LM Studio: keep load status unknown.
                 models = []
                 for item in visible:
@@ -306,7 +306,7 @@ def create_app(settings: Settings | None = None,
                     })
                 return {"models": models, "base_url": base,
                         "message": "接続できたよ。モデルを選んでね。" if models else "モデルが見つからなかった。LM Studioでモデルを準備してね。"}
-        except (httpx.TimeoutException, TimeoutError):
+        except (httpx.TimeoutException, asyncio.TimeoutError, TimeoutError):
             raise fail(504, "lm_timeout", "LM Studioの応答を待ちきれなかった。", "サーバーの状態を確認してね。") from None
         except httpx.HTTPError:
             raise fail(503, "lm_unreachable", "LM Studioにつながらなかった。", "Developerでサーバーを起動して、アドレスを確認してね。") from None
@@ -342,7 +342,7 @@ def create_app(settings: Settings | None = None,
             watcher = asyncio.create_task(watch_disconnect())
             try:
                 idea = await asyncio.wait_for(work, settings.generation_timeout_seconds)
-            except (httpx.TimeoutException, TimeoutError):
+            except (httpx.TimeoutException, asyncio.TimeoutError, TimeoutError):
                 raise fail(504, "generation_timeout", "生成の待ち時間を超えたよ。", "モデルのロード状態を確認するか、デモで引いてね。") from None
             except httpx.HTTPError:
                 raise fail(503, "lm_unreachable", "LM Studioにつながらなかった。", "Developerでサーバーを起動してね。") from None

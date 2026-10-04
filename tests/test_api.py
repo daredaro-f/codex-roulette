@@ -9,6 +9,7 @@ import httpx
 import pytest
 from fastapi.testclient import TestClient
 
+from roulette import app as app_module
 from roulette.app import Settings, create_app
 
 
@@ -68,6 +69,35 @@ def assert_error(response, status):
     assert isinstance(detail["message"], str) and detail["message"]
     assert isinstance(detail["hint"], str) and detail["hint"]
     return detail
+
+
+@pytest.fixture
+def legacy_asyncio_timeout(monkeypatch):
+    """Reproduce Python 3.10's distinct timeout type without patching global asyncio."""
+    class LegacyTimeoutError(Exception):
+        pass
+
+    class LegacyAsyncio:
+        TimeoutError = LegacyTimeoutError
+
+        def __init__(self):
+            self.wait_budgets = []
+
+        def __getattr__(self, name):
+            return getattr(asyncio, name)
+
+        async def wait_for(self, awaitable, timeout):
+            self.wait_budgets.append(timeout)
+            try:
+                # Preserve real cancellation while keeping the 5 s / 2 s API waits short.
+                return await asyncio.wait_for(awaitable, min(timeout, 0.03))
+            except (asyncio.TimeoutError, TimeoutError) as exc:
+                raise LegacyTimeoutError() from exc
+
+    legacy = LegacyAsyncio()
+    assert not issubclass(legacy.TimeoutError, TimeoutError)
+    monkeypatch.setattr(app_module, "asyncio", legacy)
+    return legacy
 
 
 def test_demo_works_without_lm_studio_and_uses_selected_feature():
@@ -349,6 +379,64 @@ def test_http_timeout_has_actionable_error():
 
     with isolated_client(handler) as client:
         assert_error(client.post("/api/generate", json=generation_request()), 504)
+
+
+def test_python310_generation_timeout_returns_504_and_releases_the_lock(legacy_asyncio_timeout):
+    calls = []
+
+    async def handler(request):
+        calls.append(request)
+        if len(calls) == 1:
+            await asyncio.sleep(0.1)
+        return completion()
+
+    with isolated_client(handler, generation_timeout_seconds=0.02) as client:
+        detail = assert_error(client.post("/api/generate", json=generation_request()), 504)
+        assert detail["code"] == "generation_timeout"
+        assert client.post("/api/generate", json=generation_request()).status_code == 200
+        assert legacy_asyncio_timeout.wait_budgets == [0.02, 0.02]
+
+
+def test_python310_model_list_timeout_returns_504(legacy_asyncio_timeout):
+    paths = []
+
+    async def handler(request):
+        paths.append(request.url.path)
+        await asyncio.sleep(0.1)
+        return httpx.Response(200, json={"data": [{"id": MODEL}]})
+
+    with isolated_client(handler) as client:
+        detail = assert_error(client.post("/api/models", json={"base_url": BASE_URL}), 504)
+        assert detail["code"] == "lm_timeout"
+        assert paths == ["/v1/models"]
+        assert legacy_asyncio_timeout.wait_budgets == [5]
+
+
+def test_python310_native_metadata_timeout_preserves_the_available_models(legacy_asyncio_timeout):
+    async def handler(request):
+        if request.url.path == "/v1/models":
+            return httpx.Response(200, json={"data": [{"id": MODEL}]})
+        assert request.url.path == "/api/v1/models"
+        await asyncio.sleep(0.1)
+        return httpx.Response(200, json={"models": []})
+
+    with isolated_client(handler) as client:
+        response = client.post("/api/models", json={"base_url": BASE_URL})
+        assert response.status_code == 200, response.text
+        assert response.json()["models"] == [{
+            "id": MODEL, "name": MODEL, "loaded": None,
+            "type": "unknown", "reasoning_off_available": False,
+        }]
+        assert legacy_asyncio_timeout.wait_budgets == [5, 2]
+
+
+def test_model_list_connection_failure_remains_503():
+    def handler(request):
+        raise httpx.ConnectError("Mock LM Studio is stopped", request=request)
+
+    with isolated_client(handler) as client:
+        detail = assert_error(client.post("/api/models", json={"base_url": BASE_URL}), 503)
+        assert detail["code"] == "lm_unreachable"
 
 
 def test_overlapping_requests_are_rejected_and_lock_is_released():
